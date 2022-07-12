@@ -4,11 +4,13 @@ import { fetchEventById } from './js/fetchEventById';
 
 const events = document.querySelector('.events');
 const eventsWrapper = document.querySelector('.events__wrapper');
-const eventId = document.querySelector('.events__id')
+const eventId = document.querySelector('.events__id');
+const inputEvent = document.querySelector('.search-box');
+const searchBtn = document.querySelector('.search-btn')
 
 const searchEvents = async () => {
   try {
-    const events = await fetchEvents();
+    const events = await fetchEvents(inputEvent.value, '', 2);
     console.log(events);
     // console.log(events._embedded.events[0]._embedded.venues[0].address.line1)
     renderEvents(events._embedded.events);
@@ -27,7 +29,7 @@ function renderEvents(data) {
     <div class="events__wrapper">     
       <img  data-id=${id}
         class="events__image" 
-        src=${images[0].url}          
+        src=${images.filter(i => i.ratio === '4_3').map(i => `${i.url}`)}          
                 
         loading="lazy"
         >
@@ -69,7 +71,7 @@ function renderEventsById(dataId)  {
     <div class="event__card">     
       <img
         class="event__image" 
-        src=${images[0].url}          
+        src=${images.filter(i => (i.ratio === '3_2' && i.width === 1024)).map(i => `${i.url}`)}          
                 
         loading="lazy"
         >
@@ -77,7 +79,7 @@ function renderEventsById(dataId)  {
       <p class="event__when"> 
         WHEN: ${dates.start.localDate} 
               ${dates.start.localTime}
-              ( ${dates.timezone} )
+              ${dates.timezone ? `(${dates.timezone})` : ''}
       </p>
       <p class="event__where">
          WHERE:
@@ -114,8 +116,8 @@ function selectEvents(e) {
 
 events.addEventListener("click", searchEventById);
 
-
-searchEvents();
+searchBtn.addEventListener("click", searchEvents)
+// searchEvents();
 // searchEventById();
 
 
