@@ -32,5 +32,6 @@ selected.addEventListener("click", () => {
   optionsContainer.classList.toggle("active");
 });
 
- 
- 
+export function searchCountryCode(){
+  return selected.getAttribute('value')
+}
