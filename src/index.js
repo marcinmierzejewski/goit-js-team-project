@@ -5,17 +5,21 @@ import { searchCountryCode } from './js/country';
 
 const events = document.querySelector('.events');
 const eventsWrapper = document.querySelector('.events__wrapper');
-const eventId = document.querySelector('.events__id');
+const eventId = document.querySelector('.backdrop');
 const inputEvent = document.querySelector('.search-box');
 const searchBtn = document.querySelector('.search-btn');
-const selected = document.querySelector(".selected");
+const selected = document.querySelector('.selected');
 
 let currentPage = 0;
 
 const searchEvents = async () => {
   try {
-    const events = await fetchEvents(inputEvent.value, searchCountryCode(), currentPage);
-    console.log(searchCountryCode())
+    const events = await fetchEvents(
+      inputEvent.value,
+      searchCountryCode(),
+      currentPage
+    );
+    console.log(searchCountryCode());
     console.log(events);
     // console.log(events._embedded.events[0]._embedded.venues[0].address.line1)
     renderEvents(events._embedded.events);
@@ -34,7 +38,9 @@ function renderEvents(data) {
     <div class="events__wrapper">     
       <img  data-id=${id}
         class="events__image" 
-        src=${images.filter(i => i.ratio === '4_3').map(i => `${i.url}`)}          
+        src=${images
+          .filter(i => i.ratio === '4_3')
+          .map(i => `${i.url}`)}          
                 
         loading="lazy"
         >
@@ -53,7 +59,7 @@ ${_embedded.venues[0].name} </p>
 }
 
 //response from clicked event, searching by id
-const searchEventById = async (e) => {
+const searchEventById = async e => {
   try {
     const eventById = await fetchEventById(selectEvents(e));
     console.log(eventById);
@@ -67,61 +73,95 @@ const searchEventById = async (e) => {
 };
 
 //rendering clicked event on modal window
-function renderEventsById(dataId)  {
-  const { info, name, dates, images, _embedded, priceRanges, url } = dataId
+function renderEventsById(dataId) {
+  const { info, name, dates, images, _embedded, priceRanges, url } = dataId;
 
-  const markupId =
-        `
-    <div class="event__card">     
-      <img
-        class="event__image" 
-        src=${images.filter(i => (i.ratio === '3_2' && i.width === 1024)).map(i => `${i.url}`)}          
+  
+  const modalHtml = document.querySelector('[data-modal]');
+  events.addEventListener('click', toggleModal);
+  modalHtml.addEventListener('click', toggleModal);
+
+  function toggleModal() {
+    modalHtml.classList.toggle('is-hidden');
+  }
+
+  const markupId = `
+    <div class="modal">   
+      <div class="modal__photo">  
+        <img
+          class="photo" 
+            src=${images
+              .filter(i => i.ratio === '3_2' && i.width === 1024)
+              .map(i => `${i.url}`)}          
                 
-        loading="lazy"
+            loading="lazy"
         >
-      <p class="event__info"> INFO: ${info ? info : name} </p>
-      <p class="event__when"> 
-        WHEN: ${dates.start.localDate} 
-              ${dates.start.localTime}
-              ${dates.timezone ? `(${dates.timezone})` : ''}
-      </p>
-      <p class="event__where">
-         WHERE:
-          ${_embedded.venues[0].city.name} , ${_embedded.venues[0].country.name}
-          ${_embedded.venues[0].name}
-      </p>
-      <p class="event__who">
-         WHO:          
-          ${_embedded.attractions ? _embedded.attractions[0].name : name }
-      </p>
-      <p class="event__price"> 
-        PRICES:
-        ${priceRanges ? 
-          priceRanges.map(p => `${p.type}  ${p.min}-${p.max}  ${p.currency}`):
-           "-----"}        
-      </p>
-      <p class="event__ticket">
-         BUY TICKETS:
-          <button>
-            <a href="${url}" target="_blank">BUY TICKETS</a>
-          </button>
-      </p>      
-    </div>      
-    `  
+      </div>
+      <div class="modal__inf">
+        <ul class="modal__list">
+          <li class="modal__item">
+            <h6 class="modal__h6">info</h6>
+            <p class="modal__text"> ${info ? info : name} </p>
+          </li>
+
+      
+      <li class="modal__item">
+              <h6 class="modal__h6">when</h6>
+              <p class="modal__text">${dates.start.localDate} 
+                                  ${dates.start.localTime}
+                                  ${dates.timezone ? `(${dates.timezone})` : ''}
+              </p>
+            </li>
+      
+
+      <li class="modal__item">
+              <h6 class="modal__h6">where</h6>
+              <p class="modal__text">${_embedded.venues[0].city.name} , ${
+    _embedded.venues[0].country.name
+  }
+           ${_embedded.venues[0].name}</p>
+            </li>
+
+
+      
+
+      <li class="modal__item">
+              <h6 class="modal__h6">who</h6>
+              <p class="modal__text">${
+                _embedded.attractions ? _embedded.attractions[0].name : name
+              }</p>
+            </li>
+
+    
+    
+    <li class="modal__item">
+              <h6 class="modal__h6">prices</h6>
+              <p class="modal__text">${
+                priceRanges
+                  ? priceRanges.map(
+                      p => `${p.type}  ${p.min}-${p.max}  ${p.currency}`
+                    )
+                  : '-----'
+              } </p>
+              <button class="modal__btn" type="button">
+              <a class="btn__text" href="${url}" target="_blank">BUY TICKETS</a></button>
+      
+            </li>
+          </ul>
+             </div> 
+    `;
   eventId.innerHTML = markupId;
 }
 
 //Function who read event id
 function selectEvents(e) {
-  const selectedEventsId = e.target.dataset.id
-  console.log(selectedEventsId)
-  return selectedEventsId
+  const selectedEventsId = e.target.dataset.id;
+  console.log(selectedEventsId);
+  return selectedEventsId;
 }
 
-events.addEventListener("click", searchEventById);
+events.addEventListener('click', searchEventById);
 
-searchBtn.addEventListener("click", searchEvents)
+searchBtn.addEventListener('click', searchEvents);
 // searchEvents();
 // searchEventById();
-
-
