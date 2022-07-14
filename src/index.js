@@ -2,6 +2,7 @@
 import { fetchEvents } from './js/fetchEvents';
 import { fetchEventById } from './js/fetchEventById';
 import { searchCountryCode } from './js/country';
+import { currentPage } from './js/pagination';
 
 const events = document.querySelector('.events');
 const eventsWrapper = document.querySelector('.events__wrapper');
@@ -10,13 +11,14 @@ const inputEvent = document.querySelector('.search-box');
 const searchBtn = document.querySelector('.search-btn');
 const selected = document.querySelector(".selected");
 
-let currentPage = 0;
+// let currentPage = 1;
 
 const searchEvents = async () => {
   try {
     const events = await fetchEvents(inputEvent.value, searchCountryCode(), currentPage);
     console.log(searchCountryCode())
-    console.log(events);
+    console.log(events)
+    // totalPage = events.page.totalPages;
     // console.log(events._embedded.events[0]._embedded.venues[0].address.line1)
     renderEvents(events._embedded.events);
   } catch (error) {
@@ -119,9 +121,9 @@ function selectEvents(e) {
 }
 
 events.addEventListener("click", searchEventById);
+searchBtn.addEventListener("click", searchEvents);
 
-searchBtn.addEventListener("click", searchEvents)
-// searchEvents();
+
 // searchEventById();
 
-
+searchEvents();
