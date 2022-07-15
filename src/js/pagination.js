@@ -3,14 +3,14 @@ const pagination = document.querySelector("ul");
 let paginationNumbers
 
 
-let totalPage = 221;
-export let currentPage = 1;
+// let totalPage = 221;
+// export let currentPage = 1;
 let activePage= '';
 // let prevPage= currentPage - 2;
 // let nextPage = currentPage + 2;
 
 
-function createPagination(total, page){
+export function createPagination(total, page){
     let paginationMark = '';
 
    
@@ -139,20 +139,20 @@ function createPagination(total, page){
 
 
 
-function setCurrentPage(e){
-    currentPage = Number(e.target.innerHTML);
-    console.log(currentPage);
-    const pageId = e.target.dataset.id
-    console.log(`pageId: ${pageId}`);    
+// function setCurrentPage(e){
+//     currentPage = Number(e.target.innerHTML);
+//     console.log(currentPage);
+//     const pageId = e.target.dataset.id
+//     console.log(`pageId: ${pageId}`);    
 
-    createPagination(totalPage, currentPage);
+//     createPagination(totalPage, currentPage);
 
     
-    const list = document.querySelector(`[data-id="${pageId}"]`)
-    list.classList.add('active')
+//     const list = document.querySelector(`[data-id="${pageId}"]`)
+//     list.classList.add('active')
    
     
-}
+// }
 
-createPagination(totalPage, currentPage);
-pagination.addEventListener("click", setCurrentPage)
+// // createPagination(totalPage, currentPage);
+// pagination.addEventListener("click", setCurrentPage)
