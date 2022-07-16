@@ -11,6 +11,7 @@ const eventId = document.querySelector('.backdrop');
 const inputEvent = document.querySelector('.search-input');
 const searchBtn = document.querySelector('.search-icon');
 
+
 const selected = document.querySelector('.selected');
 const pagination = document.querySelector("ul");
 
@@ -90,22 +91,25 @@ function renderEventsById(dataId) {
 
 
   const modalHtml = document.querySelector('[data-modal]');
-  events.addEventListener('click', toggleModal);
-  modalHtml.addEventListener('click', toggleModal);
+  const closeModalBtn = document.querySelector('[data-modal-close]');
+
+  eventsWrapper.addEventListener('click', toggleModal);
+  closeModalBtn.addEventListener('click', toggleModal);
 
   function toggleModal() {
     modalHtml.classList.toggle('is-hidden');
   }
 
   const markupId = `
-    <div class="modal">
-      <div class="modal__photo">
+    <div class="modal">   
+   <button class="close-bnt" data-modal-close>X</button>
+      <div class="modal__photo">  
         <img
-          class="photo"
+          class="photo" 
             src=${images
               .filter(i => i.ratio === '3_2' && i.width === 1024)
-              .map(i => `${i.url}`)}
-
+              .map(i => `${i.url}`)}          
+                
             loading="lazy"
         >
       </div>
@@ -113,29 +117,29 @@ function renderEventsById(dataId) {
         <ul class="modal__list">
           <li class="modal__item">
             <h6 class="modal__h6">info</h6>
-            <p class="modal__text"> ${info ? info : name} </p>
+            <p class="modal__text info"> ${info ? info : name} </p>
           </li>
 
-
+      
       <li class="modal__item">
               <h6 class="modal__h6">when</h6>
-              <p class="modal__text">${dates.start.localDate}
-                                  ${dates.start.localTime}
+              <p class="modal__text">${dates.start.localDate} </p>
+              <p class="modal__text-second"> ${dates.start.localTime}
                                   ${dates.timezone ? `(${dates.timezone})` : ''}
               </p>
             </li>
-
+      
 
       <li class="modal__item">
               <h6 class="modal__h6">where</h6>
               <p class="modal__text">${_embedded.venues[0].city.name} , ${
     _embedded.venues[0].country.name
-  }
-           ${_embedded.venues[0].name}</p>
+  }</p>
+          <p class="modal__text-second"> ${_embedded.venues[0].name}</p>
             </li>
 
 
-
+      
 
       <li class="modal__item">
               <h6 class="modal__h6">who</h6>
@@ -144,20 +148,47 @@ function renderEventsById(dataId) {
               }</p>
             </li>
 
-
-
+    
+    
     <li class="modal__item">
+    
               <h6 class="modal__h6">prices</h6>
-              <p class="modal__text">${
+             <p class="modal__text"><svg class="modal__svg" viewBox="0 0 44 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M4.91 1.27h-4.91v29.46h4.91v-29.46z"></path>
+<path d="M17.26 1.27h-4.91v29.46h4.91v-29.46z"></path>
+<path d="M24.699 1.27h-4.91v29.46h4.91v-29.46z"></path>
+<path d="M44.19 1.27h-7.291v29.46h7.291v-29.46z"></path>
+<path d="M9.82 1.27h-2.381v29.46h2.381v-29.46z"></path>
+<path d="M29.46 1.27h-2.381v29.46h2.381v-29.46z"></path>
+<path d="M34.37 1.27h-2.381v29.46h2.381v-29.46z"></path></svg>
+Standard
+              ${
                 priceRanges
-                  ? priceRanges.map(
-                      p => `${p.type}  ${p.min}-${p.max}  ${p.currency}`
-                    )
+                  ? priceRanges.map(p => `  ${p.min}-${p.max}  ${p.currency}`)
                   : '-----'
               } </p>
               <button class="modal__btn" type="button">
               <a class="btn__text" href="${url}" target="_blank">BUY TICKETS</a></button>
+              
+              <p class="modal__text"><svg class="modal__svg" viewBox="0 0 44 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M4.91 1.27h-4.91v29.46h4.91v-29.46z"></path>
+<path d="M17.26 1.27h-4.91v29.46h4.91v-29.46z"></path>
+<path d="M24.699 1.27h-4.91v29.46h4.91v-29.46z"></path>
+<path d="M44.19 1.27h-7.291v29.46h7.291v-29.46z"></path>
+<path d="M9.82 1.27h-2.381v29.46h2.381v-29.46z"></path>
+<path d="M29.46 1.27h-2.381v29.46h2.381v-29.46z"></path>
+<path d="M34.37 1.27h-2.381v29.46h2.381v-29.46z"></path></svg>
+VIP
+              ${
+                priceRanges
+                  ? priceRanges.map(p => `  ${p.min}-${p.max}  ${p.currency}`)
+                  : '-----'
+              } </p>
+              <button class="modal__btn" type="button">
+              <a class="btn__text" href="${url}" target="_blank">BUY TICKETS</a></button>
+              
 
+      
             </li>
           </ul>
              </div>

@@ -22,7 +22,7 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background: #ffffff;
+ background: #FFF2FD;
   box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.12), 0px 1px 1px rgba(0, 0, 0, 0.14),
     0px 2px 1px rgba(0, 0, 0, 0.2);
   border-radius: 200px 0px;
@@ -82,6 +82,17 @@ font-size: 18px;
 line-height: 22px;
  margin: 7px 0 20px 0;
  color: black;
+ display: flex;
+
+ &-second{
+font-family: 'Montserrat';
+font-style: normal;
+font-weight: 400;
+font-size: 18px;
+line-height: 22px;
+ margin: -15px 0 20px 0;
+ color: black;
+ }
 
   }
 
@@ -89,7 +100,7 @@ line-height: 22px;
 
 width: 145px;
 height: 40px;
-
+margin-bottom: 30px;
 
 background: #4C00FE;
 border-radius: 5px;
@@ -131,6 +142,12 @@ line-height: 20px;
 
 color: #4C00FE;
   }
+  &__svg{
+    fill: #0E0E0E;
+    Width: 29px;
+Height:20px;
+margin-right: 13px;
+  }
 }
 
 .photo {
@@ -155,4 +172,23 @@ display: flex;
 .btn__text{
  color: #FFFFFF;
  text-decoration: none;
+}
+
+.info{
+  width: 450px;
+  height: 66px;
+  overflow: hidden;
+  word-wrap: break-word;
+}
+
+.close-bnt {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 30px;
+  height: 30px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 50%;
+  cursor: pointer;
+  background-color: #ffffff;
 }
