@@ -1,5 +1,14 @@
 .pagination {
   display: flex;
-  list-style: none;
+  text-align: center;
   justify-content: center;
+  list-style: none;
+}
+
+.pagination li {
+  padding: 10px;
+}
+
+.active {
+  background-color: red;
 }

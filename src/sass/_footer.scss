@@ -5,11 +5,20 @@
     
 // }
 
-// .footer__description {
-//     display: flex;
-//     justify-content: center;
-//     align-items: center;
-// }
+.footer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.footer__description p {
+    font-family: 'Montserrat';
+        font-style: normal;
+        font-weight: 400;
+        font-size: 16px;
+        line-height: 20px;
+        text-align: center;
+        color: #939393;
+};
 
 span {
     color: red;

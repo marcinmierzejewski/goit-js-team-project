@@ -2,27 +2,35 @@
 import { fetchEvents } from './js/fetchEvents';
 import { fetchEventById } from './js/fetchEventById';
 import { searchCountryCode } from './js/country';
+// import { currentPage } from './js/pagination';//import currentPage from paginations.js to fetchEvent parametr
+import { createPagination } from './js/pagination';
 
 const events = document.querySelector('.events');
 const eventsWrapper = document.querySelector('.events__wrapper');
 const eventId = document.querySelector('.backdrop');
 const inputEvent = document.querySelector('.search-box');
 const searchBtn = document.querySelector('.search-btn');
-const selected = document.querySelector('.selected');
 
-let currentPage = 0;
+const selected = document.querySelector('.selected');
+const pagination = document.querySelector("ul");
+
+let currentPage = 1;
+let totalPage 
 
 const searchEvents = async () => {
   try {
     const events = await fetchEvents(
       inputEvent.value,
       searchCountryCode(),
-      currentPage
+      currentPage-1
     );
     console.log(searchCountryCode());
-    console.log(events);
+    console.log(events);    
+    
+    totalPage = events.page.totalPages;
     // console.log(events._embedded.events[0]._embedded.venues[0].address.line1)
     renderEvents(events._embedded.events);
+    createPagination(totalPage, currentPage)
   } catch (error) {
     console.log(error.message);
     console.log('Something WRONG 0_o !?!');
@@ -160,8 +168,26 @@ function selectEvents(e) {
   return selectedEventsId;
 }
 
-events.addEventListener('click', searchEventById);
+function setCurrentPage(e){
+  currentPage = Number(e.target.innerHTML);
+  console.log(currentPage);
+  const pageId = e.target.dataset.id
+  console.log(`pageId: ${pageId}`);    
 
-searchBtn.addEventListener('click', searchEvents);
-// searchEvents();
+  createPagination(totalPage, currentPage);
+  
+  const list = document.querySelector(`[data-id="${pageId}"]`)
+  list.classList.add('active')
+ 
+  
+}
+
+pagination.addEventListener("click", setCurrentPage)
+
+events.addEventListener("click", searchEventById);
+searchBtn.addEventListener("click", searchEvents);
+
+
 // searchEventById();
+
+searchEvents();
