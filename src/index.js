@@ -2,27 +2,39 @@
 import { fetchEvents } from './js/fetchEvents';
 import { fetchEventById } from './js/fetchEventById';
 import { searchCountryCode } from './js/country';
+// import { currentPage } from './js/pagination';//import currentPage from paginations.js to fetchEvent parametr
+import { createPagination } from './js/pagination';
 
 const events = document.querySelector('.events');
 const eventsWrapper = document.querySelector('.events__wrapper');
 const eventId = document.querySelector('.backdrop');
-const inputEvent = document.querySelector('.search-box');
-const searchBtn = document.querySelector('.search-btn');
-const selected = document.querySelector('.selected');
+const inputEvent = document.querySelector('.search-input');
+const searchBtn = document.querySelector('.search-icon');
 
-let currentPage = 0;
+const selected = document.querySelector('.selected');
+const pagination = document.querySelector("ul");
+
+let currentPage = 1;
+let totalPage = '';
+
 
 const searchEvents = async () => {
   try {
     const events = await fetchEvents(
       inputEvent.value,
       searchCountryCode(),
-      currentPage
+      currentPage-1
     );
     console.log(searchCountryCode());
     console.log(events);
+
+    totalPage = events.page.totalPages;
     // console.log(events._embedded.events[0]._embedded.venues[0].address.line1)
     renderEvents(events._embedded.events);
+
+    createPagination(totalPage, currentPage);
+
+    
   } catch (error) {
     console.log(error.message);
     console.log('Something WRONG 0_o !?!');
@@ -35,13 +47,13 @@ function renderEvents(data) {
     .map(
       ({ id, name, dates, images, _embedded, priceRanges }) =>
         `
-    <div class="events__wrapper">     
+    <div class="events__wrapper">
       <img  data-id=${id}
-        class="events__image" 
+        class="events__image"
         src=${images
           .filter(i => i.ratio === '4_3')
-          .map(i => `${i.url}`)}          
-                
+          .map(i => `${i.url}`)}
+
         loading="lazy"
         >
         <div class="events__design"></div>
@@ -76,7 +88,7 @@ const searchEventById = async e => {
 function renderEventsById(dataId) {
   const { info, name, dates, images, _embedded, priceRanges, url } = dataId;
 
-  
+
   const modalHtml = document.querySelector('[data-modal]');
   events.addEventListener('click', toggleModal);
   modalHtml.addEventListener('click', toggleModal);
@@ -86,14 +98,14 @@ function renderEventsById(dataId) {
   }
 
   const markupId = `
-    <div class="modal">   
-      <div class="modal__photo">  
+    <div class="modal">
+      <div class="modal__photo">
         <img
-          class="photo" 
+          class="photo"
             src=${images
               .filter(i => i.ratio === '3_2' && i.width === 1024)
-              .map(i => `${i.url}`)}          
-                
+              .map(i => `${i.url}`)}
+
             loading="lazy"
         >
       </div>
@@ -104,15 +116,15 @@ function renderEventsById(dataId) {
             <p class="modal__text"> ${info ? info : name} </p>
           </li>
 
-      
+
       <li class="modal__item">
               <h6 class="modal__h6">when</h6>
-              <p class="modal__text">${dates.start.localDate} 
+              <p class="modal__text">${dates.start.localDate}
                                   ${dates.start.localTime}
                                   ${dates.timezone ? `(${dates.timezone})` : ''}
               </p>
             </li>
-      
+
 
       <li class="modal__item">
               <h6 class="modal__h6">where</h6>
@@ -123,7 +135,7 @@ function renderEventsById(dataId) {
             </li>
 
 
-      
+
 
       <li class="modal__item">
               <h6 class="modal__h6">who</h6>
@@ -132,8 +144,8 @@ function renderEventsById(dataId) {
               }</p>
             </li>
 
-    
-    
+
+
     <li class="modal__item">
               <h6 class="modal__h6">prices</h6>
               <p class="modal__text">${
@@ -145,10 +157,10 @@ function renderEventsById(dataId) {
               } </p>
               <button class="modal__btn" type="button">
               <a class="btn__text" href="${url}" target="_blank">BUY TICKETS</a></button>
-      
+
             </li>
           </ul>
-             </div> 
+             </div>
     `;
   eventId.innerHTML = markupId;
 }
@@ -160,8 +172,25 @@ function selectEvents(e) {
   return selectedEventsId;
 }
 
-events.addEventListener('click', searchEventById);
+//function to pagination. Change currentPage and fetch with actual page
+function setCurrentPage(e){
+  currentPage = Number(e.target.innerHTML);
+  console.log(currentPage);
+  const pageId = e.target.dataset.id
+  console.log(`pageId: ${pageId}`);
 
-searchBtn.addEventListener('click', searchEvents);
-// searchEvents();
-// searchEventById();
+  searchEvents(); 
+  
+  createPagination(totalPage, currentPage);  
+
+}
+
+pagination.addEventListener("click", setCurrentPage)
+
+events.addEventListener("click", searchEventById);
+searchBtn.addEventListener("click", () => {
+  currentPage = 1;
+  searchEvents()
+});
+
+searchEvents();
