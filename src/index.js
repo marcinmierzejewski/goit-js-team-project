@@ -15,7 +15,7 @@ const selected = document.querySelector('.selected');
 const pagination = document.querySelector("ul");
 
 let currentPage = 1;
-let totalPage 
+let totalPage = '';
 
 const searchEvents = async () => {
   try {
@@ -30,7 +30,10 @@ const searchEvents = async () => {
     totalPage = events.page.totalPages;
     // console.log(events._embedded.events[0]._embedded.venues[0].address.line1)
     renderEvents(events._embedded.events);
-    createPagination(totalPage, currentPage)
+
+    createPagination(totalPage, currentPage);
+
+    
   } catch (error) {
     console.log(error.message);
     console.log('Something WRONG 0_o !?!');
@@ -168,26 +171,23 @@ function selectEvents(e) {
   return selectedEventsId;
 }
 
+//function to pagination. Change currentPage and fetch with actual page
 function setCurrentPage(e){
   currentPage = Number(e.target.innerHTML);
   console.log(currentPage);
   const pageId = e.target.dataset.id
-  console.log(`pageId: ${pageId}`);    
-
-  createPagination(totalPage, currentPage);
+  console.log(`pageId: ${pageId}`);
+  searchEvents(); 
   
-  const list = document.querySelector(`[data-id="${pageId}"]`)
-  list.classList.add('active')
- 
-  
+  createPagination(totalPage, currentPage);  
 }
 
 pagination.addEventListener("click", setCurrentPage)
 
 events.addEventListener("click", searchEventById);
-searchBtn.addEventListener("click", searchEvents);
-
-
-// searchEventById();
+searchBtn.addEventListener("click", () => {
+  currentPage = 1;
+  searchEvents()
+});
 
 searchEvents();
