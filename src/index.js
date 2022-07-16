@@ -10,21 +10,20 @@ const eventsWrapper = document.querySelector('.events__wrapper');
 const eventId = document.querySelector('.backdrop');
 const inputEvent = document.querySelector('.search-input');
 const searchBtn = document.querySelector('.search-icon');
-
+ const eventsName = document.querySelector('.events__name');
 
 const selected = document.querySelector('.selected');
-const pagination = document.querySelector("ul");
+const pagination = document.querySelector('ul');
 
 let currentPage = 1;
 let totalPage = '';
-
 
 const searchEvents = async () => {
   try {
     const events = await fetchEvents(
       inputEvent.value,
       searchCountryCode(),
-      currentPage-1
+      currentPage - 1
     );
     console.log(searchCountryCode());
     console.log(events);
@@ -34,8 +33,6 @@ const searchEvents = async () => {
     renderEvents(events._embedded.events);
 
     createPagination(totalPage, currentPage);
-
-    
   } catch (error) {
     console.log(error.message);
     console.log('Something WRONG 0_o !?!');
@@ -51,9 +48,7 @@ function renderEvents(data) {
     <div class="events__wrapper">
       <img  data-id=${id}
         class="events__image"
-        src=${images
-          .filter(i => i.ratio === '4_3')
-          .map(i => `${i.url}`)}
+        src=${images.filter(i => i.ratio === '4_3').map(i => `${i.url}`)}
 
         loading="lazy"
         >
@@ -89,20 +84,31 @@ const searchEventById = async e => {
 function renderEventsById(dataId) {
   const { info, name, dates, images, _embedded, priceRanges, url } = dataId;
 
+  // const modal = document.querySelector('[data-modal]');
+  // const closeModalBtn = document.querySelector('[data-modal-close]');
 
-  const modalHtml = document.querySelector('[data-modal]');
-  const closeModalBtn = document.querySelector('[data-modal-close]');
+  // events.addEventListener('click', toggleModal);
+  // closeModalBtn.addEventListener('click', toggleModal);
+  
 
-  eventsWrapper.addEventListener('click', toggleModal);
-  closeModalBtn.addEventListener('click', toggleModal);
-
-  function toggleModal() {
-    modalHtml.classList.toggle('is-hidden');
-  }
+  // function toggleModal() {
+  //   modal.classList.toggle('is-hidden');
+  // }
 
   const markupId = `
     <div class="modal">   
-   <button class="close-bnt" data-modal-close>X</button>
+   <button class="close-btn" data-modal-close>X</button>
+   
+        <img
+          class="photo__radius" 
+            src=${images
+              .filter(i => i.ratio === '4_3')
+              .map(i => `${i.url}`)}          
+                
+            loading="lazy"
+        >
+
+        
       <div class="modal__photo">  
         <img
           class="photo" 
@@ -194,6 +200,17 @@ VIP
              </div>
     `;
   eventId.innerHTML = markupId;
+
+  const modal = document.querySelector('[data-modal]');
+  const closeModalBtn = document.querySelector('[data-modal-close]');
+
+  events.addEventListener('click', toggleModal);
+  closeModalBtn.addEventListener('click', toggleModal);
+
+  function toggleModal() {
+    modal.classList.toggle('is-hidden');
+  }
+
 }
 
 //Function who read event id
@@ -204,24 +221,23 @@ function selectEvents(e) {
 }
 
 //function to pagination. Change currentPage and fetch with actual page
-function setCurrentPage(e){
+function setCurrentPage(e) {
   currentPage = Number(e.target.innerHTML);
   console.log(currentPage);
-  const pageId = e.target.dataset.id
+  const pageId = e.target.dataset.id;
   console.log(`pageId: ${pageId}`);
 
-  searchEvents(); 
-  
-  createPagination(totalPage, currentPage);  
+  searchEvents();
 
+  createPagination(totalPage, currentPage);
 }
 
-pagination.addEventListener("click", setCurrentPage)
+pagination.addEventListener('click', setCurrentPage);
 
-events.addEventListener("click", searchEventById);
-searchBtn.addEventListener("click", () => {
+events.addEventListener('click', searchEventById);
+searchBtn.addEventListener('click', () => {
   currentPage = 1;
-  searchEvents()
+  searchEvents();
 });
 
 searchEvents();

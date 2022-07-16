@@ -159,14 +159,14 @@ margin-right: 13px;
 
 .photo__radius{
   
-width: 144px;
-height: 181px;
-left: 568px;
-top: 214px;
-
-border-radius: 100%;
-display: flex;
- 
+width: 132px;
+    height: 132px;
+    border-radius: 100%;
+    display: flex;
+    top: 62px;
+    left: 393px;
+    position: absolute;
+    align-items: center;
 }
 
 .btn__text{
@@ -181,7 +181,7 @@ display: flex;
   word-wrap: break-word;
 }
 
-.close-bnt {
+.close-btn {
   position: absolute;
   top: 8px;
   right: 8px;
