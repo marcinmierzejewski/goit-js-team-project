@@ -7,14 +7,15 @@
   line-height: 20px;
   list-style: none;
   justify-content: center;
+  align-items: center
 };
 
 .dot {
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 30px;
-  height: 30px;
+  // width: 30px;
+  // height: 30px;
   & span {
     color: #ffffff;
   };
@@ -23,8 +24,8 @@
 .page {
   display: flex;
   justify-content: space-between;
-  width: 30px;
-  height: 30px;
+  // width: 30px;
+  // height: 30px;
   padding: 5px 12px 5px 12px;
   & span {
     color: #ffffff;
@@ -35,8 +36,8 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 30px;
-  height: 30px;
+  // width: 30px;
+  // height: 30px;
   border: 1px solid #DC56C5;
   border-radius: 10px 0px;
   & span {
