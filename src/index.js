@@ -8,14 +8,14 @@ import { createPagination } from './js/pagination';
 const events = document.querySelector('.events');
 const eventsWrapper = document.querySelector('.events__wrapper');
 const eventId = document.querySelector('.backdrop');
-const inputEvent = document.querySelector('.search-box');
-const searchBtn = document.querySelector('.search-btn');
+const inputEvent = document.querySelector('.search-input');
+const searchBtn = document.querySelector('.search-icon');
 
 const selected = document.querySelector('.selected');
 const pagination = document.querySelector("ul");
 
 let currentPage = 1;
-let totalPage 
+let totalPage
 
 const searchEvents = async () => {
   try {
@@ -25,8 +25,8 @@ const searchEvents = async () => {
       currentPage-1
     );
     console.log(searchCountryCode());
-    console.log(events);    
-    
+    console.log(events);
+
     totalPage = events.page.totalPages;
     // console.log(events._embedded.events[0]._embedded.venues[0].address.line1)
     renderEvents(events._embedded.events);
@@ -43,13 +43,13 @@ function renderEvents(data) {
     .map(
       ({ id, name, dates, images, _embedded, priceRanges }) =>
         `
-    <div class="events__wrapper">     
+    <div class="events__wrapper">
       <img  data-id=${id}
-        class="events__image" 
+        class="events__image"
         src=${images
           .filter(i => i.ratio === '4_3')
-          .map(i => `${i.url}`)}          
-                
+          .map(i => `${i.url}`)}
+
         loading="lazy"
         >
         <div class="events__design"></div>
@@ -84,7 +84,7 @@ const searchEventById = async e => {
 function renderEventsById(dataId) {
   const { info, name, dates, images, _embedded, priceRanges, url } = dataId;
 
-  
+
   const modalHtml = document.querySelector('[data-modal]');
   events.addEventListener('click', toggleModal);
   modalHtml.addEventListener('click', toggleModal);
@@ -94,14 +94,14 @@ function renderEventsById(dataId) {
   }
 
   const markupId = `
-    <div class="modal">   
-      <div class="modal__photo">  
+    <div class="modal">
+      <div class="modal__photo">
         <img
-          class="photo" 
+          class="photo"
             src=${images
               .filter(i => i.ratio === '3_2' && i.width === 1024)
-              .map(i => `${i.url}`)}          
-                
+              .map(i => `${i.url}`)}
+
             loading="lazy"
         >
       </div>
@@ -112,15 +112,15 @@ function renderEventsById(dataId) {
             <p class="modal__text"> ${info ? info : name} </p>
           </li>
 
-      
+
       <li class="modal__item">
               <h6 class="modal__h6">when</h6>
-              <p class="modal__text">${dates.start.localDate} 
+              <p class="modal__text">${dates.start.localDate}
                                   ${dates.start.localTime}
                                   ${dates.timezone ? `(${dates.timezone})` : ''}
               </p>
             </li>
-      
+
 
       <li class="modal__item">
               <h6 class="modal__h6">where</h6>
@@ -131,7 +131,7 @@ function renderEventsById(dataId) {
             </li>
 
 
-      
+
 
       <li class="modal__item">
               <h6 class="modal__h6">who</h6>
@@ -140,8 +140,8 @@ function renderEventsById(dataId) {
               }</p>
             </li>
 
-    
-    
+
+
     <li class="modal__item">
               <h6 class="modal__h6">prices</h6>
               <p class="modal__text">${
@@ -153,10 +153,10 @@ function renderEventsById(dataId) {
               } </p>
               <button class="modal__btn" type="button">
               <a class="btn__text" href="${url}" target="_blank">BUY TICKETS</a></button>
-      
+
             </li>
           </ul>
-             </div> 
+             </div>
     `;
   eventId.innerHTML = markupId;
 }
@@ -172,14 +172,14 @@ function setCurrentPage(e){
   currentPage = Number(e.target.innerHTML);
   console.log(currentPage);
   const pageId = e.target.dataset.id
-  console.log(`pageId: ${pageId}`);    
+  console.log(`pageId: ${pageId}`);
 
   createPagination(totalPage, currentPage);
-  
+
   const list = document.querySelector(`[data-id="${pageId}"]`)
   list.classList.add('active')
- 
-  
+
+
 }
 
 pagination.addEventListener("click", setCurrentPage)
