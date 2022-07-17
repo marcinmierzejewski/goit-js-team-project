@@ -5,6 +5,9 @@ import { searchCountryCode } from './js/country';
 // import { currentPage } from './js/pagination';//import currentPage from paginations.js to fetchEvent parametr
 import { createPagination } from './js/pagination';
 
+//Import library to show notifications
+import { Notify } from 'notiflix';
+
 const events = document.querySelector('.events');
 const eventsWrapper = document.querySelector('.events__wrapper');
 const eventId = document.querySelector('.backdrop');
@@ -26,13 +29,21 @@ const searchEvents = async () => {
       currentPage - 1
     );
     console.log(searchCountryCode());
-    console.log(events);
+    console.log(events);    
 
     totalPage = events.page.totalPages;
     // console.log(events._embedded.events[0]._embedded.venues[0].address.line1)
-    renderEvents(events._embedded.events);
-
-    createPagination(totalPage, currentPage);
+    if (totalPage != 0){
+      Notify.success(`We found ${events.page.totalElements} events.`);
+      renderEvents(events._embedded.events);
+      createPagination(totalPage, currentPage);  
+    } else {
+      Notify.failure(
+        'Oooh, there are no events matching your search query. Please try again.'
+      );
+    }
+  
+    
   } catch (error) {
     console.log(error.message);
     console.log('Something WRONG 0_o !?!');
