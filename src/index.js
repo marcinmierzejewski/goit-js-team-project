@@ -13,20 +13,20 @@ const eventsWrapper = document.querySelector('.events__wrapper');
 const eventId = document.querySelector('.backdrop');
 const inputEvent = document.querySelector('.search-input');
 const searchBtn = document.querySelector('.search-icon');
+ const eventsName = document.querySelector('.events__name');
 
 const selected = document.querySelector('.selected');
-const pagination = document.querySelector("ul");
+const pagination = document.querySelector('ul');
 
 let currentPage = 1;
 let totalPage = '';
-
 
 const searchEvents = async () => {
   try {
     const events = await fetchEvents(
       inputEvent.value,
       searchCountryCode(),
-      currentPage-1
+      currentPage - 1
     );
     console.log(searchCountryCode());
     console.log(events);    
@@ -59,9 +59,8 @@ function renderEvents(data) {
     <div class="events__wrapper">
       <img  data-id=${id}
         class="events__image"
-        src=${images
-          .filter(i => i.ratio === '4_3')
-          .map(i => `${i.url}`)}
+        src=${images.filter(i => i.ratio === '4_3').map(i => `${i.url}`)}
+      
 
         loading="lazy"
         >
@@ -97,54 +96,62 @@ const searchEventById = async e => {
 function renderEventsById(dataId) {
   const { info, name, dates, images, _embedded, priceRanges, url } = dataId;
 
-
-  const modalHtml = document.querySelector('[data-modal]');
-  events.addEventListener('click', toggleModal);
-  modalHtml.addEventListener('click', toggleModal);
-
-  function toggleModal() {
-    modalHtml.classList.toggle('is-hidden');
-  }
-
   const markupId = `
-    <div class="modal">
-      <div class="modal__photo">
+    <div class="modal">   
+   <button class="close-btn" data-modal-close>
+   <p class="modal__text"><svg class="m" viewBox="0 0 44 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill="#4c00fe" style="fill: var(--color1, #4c00fe)" d="M1.646 32c-0.422 0-0.843-0.16-1.163-0.483-0.643-0.643-0.643-1.685 0-2.328l28.707-28.707c0.643-0.643 1.685-0.643 2.328 0s0.643 1.685 0 2.329l-28.707 28.706c-0.323 0.321-0.744 0.483-1.165 0.483z"></path>
+<path fill="#4c00fe" style="fill: var(--color1, #4c00fe)" d="M30.355 32c-0.422 0-0.843-0.16-1.163-0.483l-28.709-28.706c-0.643-0.643-0.643-1.686 0-2.329s1.685-0.643 2.329 0l28.707 28.707c0.643 0.643 0.643 1.685 0 2.328-0.323 0.321-0.744 0.483-1.163 0.483z"></path>
+   </button>
+   
         <img
-          class="photo"
+          class="photo__radius" 
+            src=${images.filter(i => i.ratio === '4_3').map(i => `${i.url}`)}  
+                  
+                
+            loading="lazy"
+        >
+
+        
+      <div class="modal__photo">  
+        <img
+          class="photo" 
             src=${images
               .filter(i => i.ratio === '3_2' && i.width === 1024)
               .map(i => `${i.url}`)}
-
+               
+                
             loading="lazy"
         >
       </div>
+
       <div class="modal__inf">
         <ul class="modal__list">
           <li class="modal__item">
             <h6 class="modal__h6">info</h6>
-            <p class="modal__text"> ${info ? info : name} </p>
+            <p class="modal__text info"> ${info ? info : name} </p>
           </li>
 
-
+      
       <li class="modal__item">
               <h6 class="modal__h6">when</h6>
-              <p class="modal__text">${dates.start.localDate}
-                                  ${dates.start.localTime}
+              <p class="modal__text">${dates.start.localDate} </p>
+              <p class="modal__text-second"> ${dates.start.localTime}
                                   ${dates.timezone ? `(${dates.timezone})` : ''}
               </p>
             </li>
-
+      
 
       <li class="modal__item">
               <h6 class="modal__h6">where</h6>
               <p class="modal__text">${_embedded.venues[0].city.name} , ${
     _embedded.venues[0].country.name
-  }
-           ${_embedded.venues[0].name}</p>
+  }</p>
+          <p class="modal__text-second"> ${_embedded.venues[0].name}</p>
             </li>
 
 
-
+      
 
       <li class="modal__item">
               <h6 class="modal__h6">who</h6>
@@ -153,25 +160,65 @@ function renderEventsById(dataId) {
               }</p>
             </li>
 
-
-
+    
+    
     <li class="modal__item">
+    
               <h6 class="modal__h6">prices</h6>
-              <p class="modal__text">${
+             <p class="modal__text"><svg class="modal__svg" viewBox="0 0 44 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M4.91 1.27h-4.91v29.46h4.91v-29.46z"></path>
+<path d="M17.26 1.27h-4.91v29.46h4.91v-29.46z"></path>
+<path d="M24.699 1.27h-4.91v29.46h4.91v-29.46z"></path>
+<path d="M44.19 1.27h-7.291v29.46h7.291v-29.46z"></path>
+<path d="M9.82 1.27h-2.381v29.46h2.381v-29.46z"></path>
+<path d="M29.46 1.27h-2.381v29.46h2.381v-29.46z"></path>
+<path d="M34.37 1.27h-2.381v29.46h2.381v-29.46z"></path></svg>
+Standard
+              ${
                 priceRanges
-                  ? priceRanges.map(
-                      p => `${p.type}  ${p.min}-${p.max}  ${p.currency}`
-                    )
+                  ? priceRanges.map(p => `  ${p.min}-${p.max}  ${p.currency}`)
                   : '-----'
               } </p>
               <button class="modal__btn" type="button">
               <a class="btn__text" href="${url}" target="_blank">BUY TICKETS</a></button>
-
+              
+              <p class="modal__text"><svg class="modal__svg" viewBox="0 0 44 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M4.91 1.27h-4.91v29.46h4.91v-29.46z"></path>
+<path d="M17.26 1.27h-4.91v29.46h4.91v-29.46z"></path>
+<path d="M24.699 1.27h-4.91v29.46h4.91v-29.46z"></path>
+<path d="M44.19 1.27h-7.291v29.46h7.291v-29.46z"></path>
+<path d="M9.82 1.27h-2.381v29.46h2.381v-29.46z"></path>
+<path d="M29.46 1.27h-2.381v29.46h2.381v-29.46z"></path>
+<path d="M34.37 1.27h-2.381v29.46h2.381v-29.46z"></path></svg>
+VIP
+              ${
+                priceRanges
+                  ? priceRanges.map(p => `  ${p.min}-${p.max}  ${p.currency}`)
+                  : '-----'
+              } </p>
+              <button class="modal__btn" type="button">
+              <a class="btn__text" href="${url}" target="_blank">BUY TICKETS</a></button>              
             </li>
           </ul>
-             </div>
+          
+</div>
+
+<button class="modal__btn-author" type="button">MORE FROM THIS AUTHOR</button>
+
+
     `;
   eventId.innerHTML = markupId;
+
+  const modal = document.querySelector('[data-modal]');
+  const closeModalBtn = document.querySelector('[data-modal-close]');
+
+  events.addEventListener('click', toggleModal);
+  closeModalBtn.addEventListener('click', toggleModal);
+
+  function toggleModal() {
+    modal.classList.toggle('is-hidden');
+  }
+
 }
 
 //Function who read event id
@@ -182,24 +229,23 @@ function selectEvents(e) {
 }
 
 //function to pagination. Change currentPage and fetch with actual page
-function setCurrentPage(e){
+function setCurrentPage(e) {
   currentPage = Number(e.target.innerHTML);
   console.log(currentPage);
-  const pageId = e.target.dataset.id
+  const pageId = e.target.dataset.id;
   console.log(`pageId: ${pageId}`);
 
-  searchEvents(); 
-  
-  createPagination(totalPage, currentPage);  
+  searchEvents();
 
+  createPagination(totalPage, currentPage);
 }
 
-pagination.addEventListener("click", setCurrentPage)
+pagination.addEventListener('click', setCurrentPage);
 
-events.addEventListener("click", searchEventById);
-searchBtn.addEventListener("click", () => {
+events.addEventListener('click', searchEventById);
+searchBtn.addEventListener('click', () => {
   currentPage = 1;
-  searchEvents()
+  searchEvents();
 });
 
 searchEvents();
