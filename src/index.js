@@ -14,6 +14,7 @@ const eventId = document.querySelector('.backdrop');
 const inputEvent = document.querySelector('.search-input');
 const searchBtn = document.querySelector('.search-icon');
 const eventsName = document.querySelector('.events__name');
+const modal = document.querySelector('[data-modal]');
 
 
 const selected = document.querySelector('.selected');
@@ -59,7 +60,7 @@ function renderEvents(data) {
       ({ id, name, dates, images, _embedded, priceRanges }) =>
         `
     <div class="events__wrapper">
-      <img  data-id=${id}
+      <img data-id=${id}
         class="events__image"
         src=${images.filter(i => i.ratio === '4_3').map(i => `${i.url}`)}
       
@@ -211,16 +212,14 @@ VIP
     `;
   eventId.innerHTML = markupId;
 
-  const modal = document.querySelector('[data-modal]');
+  
   const closeModalBtn = document.querySelector('[data-modal-close]');
   const moreAuthor = document.querySelector('.modal__btn-author');
 
-  events.addEventListener('click', toggleModal);
+ 
   closeModalBtn.addEventListener('click', toggleModal);
 
-  function toggleModal() {
-    modal.classList.toggle('is-hidden');
-  }
+ 
 
   moreAuthor.addEventListener('click', () => {
     inputValue = name;
@@ -250,9 +249,14 @@ function setCurrentPage(e) {
   createPagination(totalPage, currentPage);
 }
 
+function toggleModal() {
+  modal.classList.toggle('is-hidden');
+}
+
 pagination.addEventListener('click', setCurrentPage);
 
 events.addEventListener('click', searchEventById);
+events.addEventListener('click', toggleModal);
 searchBtn.addEventListener('click', () => {
   inputValue = inputEvent.value;
   currentPage = 1;
