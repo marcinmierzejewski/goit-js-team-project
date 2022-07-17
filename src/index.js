@@ -49,6 +49,7 @@ function renderEvents(data) {
       <img  data-id=${id}
         class="events__image"
         src=${images.filter(i => i.ratio === '4_3').map(i => `${i.url}`)}
+      
 
         loading="lazy"
         >
@@ -84,26 +85,18 @@ const searchEventById = async e => {
 function renderEventsById(dataId) {
   const { info, name, dates, images, _embedded, priceRanges, url } = dataId;
 
-  // const modal = document.querySelector('[data-modal]');
-  // const closeModalBtn = document.querySelector('[data-modal-close]');
-
-  // events.addEventListener('click', toggleModal);
-  // closeModalBtn.addEventListener('click', toggleModal);
-  
-
-  // function toggleModal() {
-  //   modal.classList.toggle('is-hidden');
-  // }
-
   const markupId = `
     <div class="modal">   
-   <button class="close-btn" data-modal-close>X</button>
+   <button class="close-btn" data-modal-close>
+   <p class="modal__text"><svg class="m" viewBox="0 0 44 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill="#4c00fe" style="fill: var(--color1, #4c00fe)" d="M1.646 32c-0.422 0-0.843-0.16-1.163-0.483-0.643-0.643-0.643-1.685 0-2.328l28.707-28.707c0.643-0.643 1.685-0.643 2.328 0s0.643 1.685 0 2.329l-28.707 28.706c-0.323 0.321-0.744 0.483-1.165 0.483z"></path>
+<path fill="#4c00fe" style="fill: var(--color1, #4c00fe)" d="M30.355 32c-0.422 0-0.843-0.16-1.163-0.483l-28.709-28.706c-0.643-0.643-0.643-1.686 0-2.329s1.685-0.643 2.329 0l28.707 28.707c0.643 0.643 0.643 1.685 0 2.328-0.323 0.321-0.744 0.483-1.163 0.483z"></path>
+   </button>
    
         <img
           class="photo__radius" 
-            src=${images
-              .filter(i => i.ratio === '4_3')
-              .map(i => `${i.url}`)}          
+            src=${images.filter(i => i.ratio === '4_3').map(i => `${i.url}`)}  
+                  
                 
             loading="lazy"
         >
@@ -114,11 +107,13 @@ function renderEventsById(dataId) {
           class="photo" 
             src=${images
               .filter(i => i.ratio === '3_2' && i.width === 1024)
-              .map(i => `${i.url}`)}          
+              .map(i => `${i.url}`)}
+               
                 
             loading="lazy"
         >
       </div>
+
       <div class="modal__inf">
         <ul class="modal__list">
           <li class="modal__item">
@@ -191,13 +186,15 @@ VIP
                   : '-----'
               } </p>
               <button class="modal__btn" type="button">
-              <a class="btn__text" href="${url}" target="_blank">BUY TICKETS</a></button>
-              
-
-      
+              <a class="btn__text" href="${url}" target="_blank">BUY TICKETS</a></button>              
             </li>
           </ul>
-             </div>
+          
+</div>
+
+<button class="modal__btn-author" type="button">MORE FROM THIS AUTHOR</button>
+
+
     `;
   eventId.innerHTML = markupId;
 
