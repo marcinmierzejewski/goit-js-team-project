@@ -13,18 +13,20 @@ const eventsWrapper = document.querySelector('.events__wrapper');
 const eventId = document.querySelector('.backdrop');
 const inputEvent = document.querySelector('.search-input');
 const searchBtn = document.querySelector('.search-icon');
- const eventsName = document.querySelector('.events__name');
+const eventsName = document.querySelector('.events__name');
+
 
 const selected = document.querySelector('.selected');
 const pagination = document.querySelector('ul');
 
 let currentPage = 1;
 let totalPage = '';
+let inputValue = inputEvent.value;
 
 const searchEvents = async () => {
   try {
     const events = await fetchEvents(
-      inputEvent.value,
+      inputValue,
       searchCountryCode(),
       currentPage - 1
     );
@@ -211,6 +213,7 @@ VIP
 
   const modal = document.querySelector('[data-modal]');
   const closeModalBtn = document.querySelector('[data-modal-close]');
+  const moreAuthor = document.querySelector('.modal__btn-author');
 
   events.addEventListener('click', toggleModal);
   closeModalBtn.addEventListener('click', toggleModal);
@@ -218,6 +221,13 @@ VIP
   function toggleModal() {
     modal.classList.toggle('is-hidden');
   }
+
+  moreAuthor.addEventListener('click', () => {
+    inputValue = name;
+    toggleModal();
+    console.log(inputValue);
+    searchEvents();
+  })
 
 }
 
@@ -244,6 +254,7 @@ pagination.addEventListener('click', setCurrentPage);
 
 events.addEventListener('click', searchEventById);
 searchBtn.addEventListener('click', () => {
+  inputValue = inputEvent.value;
   currentPage = 1;
   searchEvents();
 });
