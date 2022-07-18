@@ -9,6 +9,10 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    @media screen and (min-width: $mobile) {
+        display: flex;
+        flex-direction: column;
+    }
 }
 .footer__description p {
     font-family: 'Montserrat';
