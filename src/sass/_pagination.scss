@@ -53,9 +53,17 @@
 
 @keyframes changePage {
   0% {
-    transform: scale(1.0)
+    transform: scale(1.0);
+    opacity: 1;
   }
+
+  50% {
+    transform: scale(1.7);
+    opacity: 0.5;
+  }
+
   100% {
-    transform: scale(2.0)
+    transform: scale(2.0);
+    opacity: 0.1;
   }
 }

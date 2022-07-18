@@ -225,6 +225,7 @@ VIP
     inputValue = name;
     toggleModal();
     console.log(inputValue);
+    currentPage = 1;
     searchEvents();
   })
 
