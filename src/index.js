@@ -24,6 +24,24 @@ let currentPage = 1;
 let totalPage = '';
 let inputValue = inputEvent.value;
 
+const loader = document.querySelector('#loading');
+ 
+window.addEventListener("load", displayLoading())
+
+//display loading
+function displayLoading() {
+  loader.classList.add('display');
+  // to stop loading after some time
+  setTimeout(() => {
+    loader.classList.remove('display');
+  }, 5000);
+}
+
+// hiding loading
+function hideLoading() {
+  loader.classList.remove('display');
+}
+
 const searchEvents = async () => {
   try {
     const events = await fetchEvents(
@@ -32,14 +50,16 @@ const searchEvents = async () => {
       currentPage - 1
     );
     console.log(searchCountryCode());
-    console.log(events);    
+    console.log(events); 
+  
 
     totalPage = events.page.totalPages;
     // console.log(events._embedded.events[0]._embedded.venues[0].address.line1)
     if (totalPage != 0){
       Notify.success(`We found ${events.page.totalElements} events.`);
       renderEvents(events._embedded.events);
-      createPagination(totalPage, currentPage);  
+      createPagination(totalPage, currentPage); 
+      hideLoading();
     } else {
       Notify.failure(
         'Oooh, there are no events matching your search query. Please try again.'
