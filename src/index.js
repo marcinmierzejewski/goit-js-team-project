@@ -21,7 +21,7 @@ let inputValue = inputEvent.value;
 
 const loader = document.querySelector('#loading');
  
-// window.addEventListener("load", displayLoading())
+window.addEventListener("load", displayLoading());
 
 //display loading
 function displayLoading() {
