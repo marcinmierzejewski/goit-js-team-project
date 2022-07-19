@@ -4,7 +4,7 @@ import { fetchEventById } from './js/fetchEventById';
 import { searchCountryCode } from './js/country';
 // import { currentPage } from './js/pagination';//import currentPage from paginations.js to fetchEvent parametr
 import { createPagination } from './js/pagination';
-
+import 'animate.css';
 //Import library to show notifications
 import { Notify } from 'notiflix';
 
@@ -25,7 +25,7 @@ let totalPage = '';
 let inputValue = inputEvent.value;
 
 const loader = document.querySelector('#loading');
- 
+
 window.addEventListener("load", displayLoading())
 
 //display loading
@@ -50,23 +50,23 @@ const searchEvents = async () => {
       currentPage - 1
     );
     console.log(searchCountryCode());
-    console.log(events); 
-  
+    console.log(events);
+
 
     totalPage = events.page.totalPages;
     // console.log(events._embedded.events[0]._embedded.venues[0].address.line1)
     if (totalPage != 0){
       Notify.success(`We found ${events.page.totalElements} events.`);
       renderEvents(events._embedded.events);
-      createPagination(totalPage, currentPage); 
+      createPagination(totalPage, currentPage);
       hideLoading();
     } else {
       Notify.failure(
         'Oooh, there are no events matching your search query. Please try again.'
       );
     }
-  
-    
+
+
   } catch (error) {
     console.log(error.message);
     console.log('Something WRONG 0_o !?!');
@@ -83,7 +83,7 @@ function renderEvents(data) {
       <img data-id=${id}
         class="events__image"
         src=${images.filter(i => i.ratio === '4_3').map(i => `${i.url}`)}
-      
+
 
         loading="lazy"
         >
@@ -120,30 +120,30 @@ function renderEventsById(dataId) {
   const { info, name, dates, images, _embedded, priceRanges, url } = dataId;
 
   const markupId = `
-    <div class="modal">   
+    <div class="modal">
    <button class="close-btn" data-modal-close>
    <p class="modal__text"><svg class="m" viewBox="0 0 44 32" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path fill="#4c00fe" style="fill: var(--color1, #4c00fe)" d="M1.646 32c-0.422 0-0.843-0.16-1.163-0.483-0.643-0.643-0.643-1.685 0-2.328l28.707-28.707c0.643-0.643 1.685-0.643 2.328 0s0.643 1.685 0 2.329l-28.707 28.706c-0.323 0.321-0.744 0.483-1.165 0.483z"></path>
 <path fill="#4c00fe" style="fill: var(--color1, #4c00fe)" d="M30.355 32c-0.422 0-0.843-0.16-1.163-0.483l-28.709-28.706c-0.643-0.643-0.643-1.686 0-2.329s1.685-0.643 2.329 0l28.707 28.707c0.643 0.643 0.643 1.685 0 2.328-0.323 0.321-0.744 0.483-1.163 0.483z"></path>
    </button>
-   
+
         <img
-          class="photo__radius" 
-            src=${images.filter(i => i.ratio === '4_3').map(i => `${i.url}`)}  
-                  
-                
+          class="photo__radius"
+            src=${images.filter(i => i.ratio === '4_3').map(i => `${i.url}`)}
+
+
             loading="lazy"
         >
 
-        
-      <div class="modal__photo">  
+
+      <div class="modal__photo">
         <img
-          class="photo" 
+          class="photo"
             src=${images
               .filter(i => i.ratio === '3_2' && i.width === 1024)
               .map(i => `${i.url}`)}
-               
-                
+
+
             loading="lazy"
         >
       </div>
@@ -155,7 +155,7 @@ function renderEventsById(dataId) {
             <p class="modal__text info"> ${info ? info : name} </p>
           </li>
 
-      
+
       <li class="modal__item">
               <h6 class="modal__h6">when</h6>
               <p class="modal__text">${dates.start.localDate} </p>
@@ -163,7 +163,7 @@ function renderEventsById(dataId) {
                                   ${dates.timezone ? `(${dates.timezone})` : ''}
               </p>
             </li>
-      
+
 
       <li class="modal__item">
               <h6 class="modal__h6">where</h6>
@@ -174,7 +174,7 @@ function renderEventsById(dataId) {
             </li>
 
 
-      
+
 
       <li class="modal__item">
               <h6 class="modal__h6">who</h6>
@@ -183,10 +183,10 @@ function renderEventsById(dataId) {
               }</p>
             </li>
 
-    
-    
+
+
     <li class="modal__item">
-    
+
               <h6 class="modal__h6">prices</h6>
              <p class="modal__text"><svg class="modal__svg" viewBox="0 0 44 32" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path d="M4.91 1.27h-4.91v29.46h4.91v-29.46z"></path>
@@ -204,7 +204,7 @@ Standard
               } </p>
               <button class="modal__btn" type="button">
               <a class="btn__text" href="${url}" target="_blank">BUY TICKETS</a></button>
-              
+
               <p class="modal__text"><svg class="modal__svg" viewBox="0 0 44 32" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path d="M4.91 1.27h-4.91v29.46h4.91v-29.46z"></path>
 <path d="M17.26 1.27h-4.91v29.46h4.91v-29.46z"></path>
@@ -220,10 +220,10 @@ VIP
                   : '-----'
               } </p>
               <button class="modal__btn" type="button">
-              <a class="btn__text" href="${url}" target="_blank">BUY TICKETS</a></button>              
+              <a class="btn__text" href="${url}" target="_blank">BUY TICKETS</a></button>
             </li>
           </ul>
-          
+
 </div>
 
 <button class="modal__btn-author" type="button">MORE FROM THIS AUTHOR</button>
@@ -232,14 +232,14 @@ VIP
     `;
   eventId.innerHTML = markupId;
 
-  
+
   const closeModalBtn = document.querySelector('[data-modal-close]');
   const moreAuthor = document.querySelector('.modal__btn-author');
 
- 
+
   closeModalBtn.addEventListener('click', toggleModal);
 
- 
+
 
   moreAuthor.addEventListener('click', () => {
     inputValue = name;
