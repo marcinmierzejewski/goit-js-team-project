@@ -69,6 +69,24 @@
   }
 }
 
+@media screen and (max-width: $up-to-tablet) {
+  .logo-tablet, .logo-desktop {
+    display: none;
+  }
+}
+
+@media screen and (min-width: $tablet) and (max-width: $up-to-desktop) {
+  .logo-mobile, .logo-desktop {
+    display: none;
+  }
+}
+
+@media screen and (min-width: $desktop) {
+  .logo-mobile, .logo-tablet {
+    display: none;
+  }
+}
+
 .gradient {
   background: linear-gradient(
       180deg,
@@ -117,7 +135,7 @@
   background-color: #fff3;
   backdrop-filter: blur(7px);
 
-  @media screen and (min-width: $mobile) and (max-width: $up-to-tablet){
+  @media screen and (min-width: $mobile) and (max-width: $up-to-tablet) {
     margin-left: -15px;
   }
 }
