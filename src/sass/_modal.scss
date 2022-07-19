@@ -92,15 +92,20 @@
 
     background: #4c00fe;
     border-radius: 5px;
-
+    color: #ffffff;
     font-family: 'Montserrat';
     font-style: normal;
     font-weight: 500;
     font-size: 16px;
     line-height: 20px;
     cursor: pointer;
+    transition: background-color 250ms cubic-bezier(0.4, 0, 0.2, 1);
 
-    color: #ffffff;
+    &:hover,
+    &:focus {
+      color: red;
+      background: #fff;
+    }
 
     &-author {
       width: 255px;
@@ -119,6 +124,12 @@
       position: absolute;
       left: 353px;
       top: 921px;
+      transition: background-color 250ms cubic-bezier(0.4, 0, 0.2, 1);
+      &:hover,
+      &:focus {
+        color: #fff;
+        background: #4c00fe;
+      }
     }
   }
 
@@ -152,6 +163,12 @@
 .btn__text {
   color: #ffffff;
   text-decoration: none;
+  transition: background-color 250ms cubic-bezier(0.4, 0, 0.2, 1);
+   &:hover,
+    &:focus {
+      color: #4c00fe;
+    
+    }
 }
 
 .info {
@@ -223,7 +240,7 @@
         margin-top: 13px;
         left: 170px;
         top: 735px;
-        border: 1px solid #DC56C5;
+        border: 1px solid #dc56c5;
       }
     }
   }
