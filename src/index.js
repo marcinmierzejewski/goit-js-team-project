@@ -37,6 +37,25 @@ function hideLoading() {
   loader.classList.remove('display');
 }
 
+//First search difficult event after loading page
+const difficultEvents = async () => {
+  try {
+    displayLoading();    
+    const events = await fetchEvents(
+      '', 'US', 0
+    );  
+
+    totalPage = events.page.totalPages;
+    renderEvents(events._embedded.events);
+    createPagination(totalPage, currentPage);
+    hideLoading();    
+    
+  } catch (error) {
+    console.log(error.message);
+    console.log('Something WRONG 0_o !?!');
+  }
+};
+
 //Function to search event by input keyword and select country
 const searchEvents = async () => {
   try {
@@ -279,4 +298,4 @@ searchBtn.addEventListener('click', () => {
   searchEvents();
 });
 
-searchEvents(); //Function call to difficult event on first load page
+difficultEvents(); //Function call to difficult event on first load page
