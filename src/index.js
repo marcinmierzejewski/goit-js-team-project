@@ -2,22 +2,17 @@
 import { fetchEvents } from './js/fetchEvents';
 import { fetchEventById } from './js/fetchEventById';
 import { searchCountryCode } from './js/country';
-// import { currentPage } from './js/pagination';//import currentPage from paginations.js to fetchEvent parametr
 import { createPagination } from './js/pagination';
 
 //Import library to show notifications
 import { Notify } from 'notiflix';
 
 const events = document.querySelector('.events');
-const eventsWrapper = document.querySelector('.events__wrapper');
 const eventId = document.querySelector('.backdrop');
 const inputEvent = document.querySelector('.search-input');
 const searchBtn = document.querySelector('.search-icon');
-const eventsName = document.querySelector('.events__name');
 const modal = document.querySelector('[data-modal]');
 
-
-const selected = document.querySelector('.selected');
 const pagination = document.querySelector('ul');
 
 let currentPage = 1;
@@ -26,7 +21,7 @@ let inputValue = inputEvent.value;
 
 const loader = document.querySelector('#loading');
  
-window.addEventListener("load", displayLoading())
+// window.addEventListener("load", displayLoading())
 
 //display loading
 function displayLoading() {
@@ -42,30 +37,30 @@ function hideLoading() {
   loader.classList.remove('display');
 }
 
+//Function to search event by input keyword and select country
 const searchEvents = async () => {
   try {
+    displayLoading();    
     const events = await fetchEvents(
       inputValue,
       searchCountryCode(),
       currentPage - 1
     );
     console.log(searchCountryCode());
-    console.log(events); 
-  
+    console.log(events);   
 
     totalPage = events.page.totalPages;
-    // console.log(events._embedded.events[0]._embedded.venues[0].address.line1)
     if (totalPage != 0){
       Notify.success(`We found ${events.page.totalElements} events.`);
       renderEvents(events._embedded.events);
       createPagination(totalPage, currentPage); 
       hideLoading();
     } else {
+      hideLoading();
       Notify.failure(
         'Oooh, there are no events matching your search query. Please try again.'
       );
-    }
-  
+    }  
     
   } catch (error) {
     console.log(error.message);
@@ -73,8 +68,8 @@ const searchEvents = async () => {
   }
 };
 
+//Function who rendering received data from backend
 function renderEvents(data) {
-  // console.log(data)
   const markup = data
     .map(
       ({ id, name, dates, images, _embedded, priceRanges }) =>
@@ -101,14 +96,14 @@ ${_embedded.venues[0].name} </p>
   events.innerHTML = markup;
 }
 
-//response from clicked event, searching by id
+//Function who response from clicked event, searching by id
 const searchEventById = async e => {
+  displayLoading()
   try {
     const eventById = await fetchEventById(selectEvents(e));
     console.log(eventById);
     renderEventsById(eventById);
-    // console.log(events._embedded.events[0]._embedded.venues[0].address.line1)
-    // renderEvents(events._embedded.events);
+    hideLoading();
   } catch (error) {
     console.log(error.message);
     console.log('Something WRONG 0_o !?!');
@@ -231,16 +226,13 @@ VIP
 
     `;
   eventId.innerHTML = markupId;
-
   
   const closeModalBtn = document.querySelector('[data-modal-close]');
   const moreAuthor = document.querySelector('.modal__btn-author');
-
  
-  closeModalBtn.addEventListener('click', toggleModal);
+  closeModalBtn.addEventListener('click', toggleModal); //event to close modal with event data by id
 
- 
-
+  //Function to load data after click "More from this author"
   moreAuthor.addEventListener('click', () => {
     inputValue = name;
     toggleModal();
@@ -248,17 +240,16 @@ VIP
     currentPage = 1;
     searchEvents();
   })
-
 }
 
-//Function who read event id
+//Function who read event id. Required to searchEventById function
 function selectEvents(e) {
   const selectedEventsId = e.target.dataset.id;
   console.log(selectedEventsId);
   return selectedEventsId;
 }
 
-//function to pagination. Change currentPage and fetch with actual page
+//Function to pagination. Change currentPage and fetch data with actual page
 function setCurrentPage(e) {
   currentPage = Number(e.target.innerHTML);
   console.log(currentPage);
@@ -270,18 +261,22 @@ function setCurrentPage(e) {
   createPagination(totalPage, currentPage);
 }
 
+//Function to hide and show modal
 function toggleModal() {
   modal.classList.toggle('is-hidden');
 }
 
-pagination.addEventListener('click', setCurrentPage);
+pagination.addEventListener('click', setCurrentPage); //event to pagination
 
-events.addEventListener('click', searchEventById);
-events.addEventListener('click', toggleModal);
+events.addEventListener('click', searchEventById); //event to search event by id
+events.addEventListener('click', toggleModal); // event to hide and show modal
+
+//event to search event by keyword and selected country
 searchBtn.addEventListener('click', () => {
+  events.innerHTML = '';
   inputValue = inputEvent.value;
   currentPage = 1;
   searchEvents();
 });
 
-searchEvents();
+searchEvents(); //Function call to difficult event on first load page
