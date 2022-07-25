@@ -81,6 +81,7 @@ const searchEvents = async () => {
       Notify.failure(
         'Oooh, there are no events matching your search query. Please try again.'
       );
+      createPagination(totalPage, currentPage);
     }  
     
   } catch (error) {
