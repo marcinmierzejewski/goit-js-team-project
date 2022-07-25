@@ -70,7 +70,9 @@ const searchEvents = async () => {
 
     totalPage = events.page.totalPages;
     if (totalPage != 0){
-      Notify.success(`We found ${events.page.totalElements} events.`);
+      if(currentPage === 1){
+        Notify.success(`We found ${events.page.totalElements} events.`);
+      }      
       renderEvents(events._embedded.events);
       createPagination(totalPage, currentPage);
       hideLoading();
@@ -79,6 +81,7 @@ const searchEvents = async () => {
       Notify.failure(
         'Oooh, there are no events matching your search query. Please try again.'
       );
+      createPagination(totalPage, currentPage);
     }  
     
   } catch (error) {
@@ -91,13 +94,15 @@ const searchEvents = async () => {
 function renderEvents(data) {
   const markup = data
     .map(
-      ({ id, name, dates, images, _embedded, priceRanges }) =>
+      ({ id, name, dates, images, _embedded}) =>
         `
     <div class="events__wrapper">
       <img data-id=${id}
         class="events__image"
-        src=${images.filter(i => i.ratio === '4_3').map(i => `${i.url}`)}
-
+        src=${images
+          .filter(i => i.ratio === '4_3')
+          .map(i => `${i.url}`)
+          .join(' ')}
 
         loading="lazy"
         >
@@ -149,7 +154,6 @@ function renderEventsById(dataId) {
             loading="lazy"
         >
 
-
       <div class="modal__photo">
         <img
           class="photo"
@@ -169,7 +173,6 @@ function renderEventsById(dataId) {
             <p class="modal__text info"> ${info ? info : name} </p>
           </li>
 
-
       <li class="modal__item">
               <h6 class="modal__h6">when</h6>
               <p class="modal__text">${dates.start.localDate} </p>
@@ -177,7 +180,6 @@ function renderEventsById(dataId) {
                                   ${dates.timezone ? `(${dates.timezone})` : ''}
               </p>
             </li>
-
 
       <li class="modal__item">
               <h6 class="modal__h6">where</h6>

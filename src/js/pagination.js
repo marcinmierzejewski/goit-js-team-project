@@ -1,10 +1,14 @@
 const pagination = document.querySelector("ul");
 
 export function createPagination(total, page){
-    let paginationMark = '';   
+    let paginationMark = '';        
         if (page <= 3) {           
             if (page === 1){
-                if (total === 1){
+                if(total === 0){
+                    paginationMark = "";
+                    pagination.innerHTML = paginationMark;
+                }   
+                else if (total === 1){
                     paginationMark = `        
                     <li class='first page active-page' data-id="${page}"> ${page} </li>
                     ` 
